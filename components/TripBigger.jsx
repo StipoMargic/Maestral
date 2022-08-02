@@ -6,12 +6,12 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-export default function Trip({ name, description, image }) {
+export default function TripBigger({ name, description, image }) {
 	return (
-		<Card sx={{ maxWidth: 345, margin: "20px 5px" }} elevation={5}>
+		<Card sx={{ maxWidth: "100%", margin: "20px 5px" }} elevation={5}>
 			<CardMedia
 				component="img"
-				height="140"
+				height="190"
 				image={`/img/${image}`}
 				alt={name}
 			/>
