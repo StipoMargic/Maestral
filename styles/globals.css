@@ -19,6 +19,7 @@ body {
 .content {
 	flex: 1 0 auto;
 	padding: 10px;
+	background-image: url("/papers.jpg") no-repeat center center fixed;
 }
 
 .footer {

@@ -47,13 +47,13 @@ const Navbar = () => {
 							display: { xs: "none", md: "flex" },
 							fontFamily: "monospace",
 							fontWeight: 700,
-							width: "150px",
+							width: "200px",
 							letterSpacing: ".3rem",
 							color: "inherit",
 							textDecoration: "none",
 						}}
 					>
-						Maestral
+						Maestralić
 					</Typography>
 
 					<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

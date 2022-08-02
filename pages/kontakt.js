@@ -26,7 +26,7 @@ export default function Kontakt() {
 							{/* // eslint-disable-next-line @next/next/no-img-element */}
 							<img
 								src="https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap
-&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&key=AIzaSyDGlqdh7h7Me5fC9WJojYoC_wvm-0CARco"
+&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&key=AIzaSyDGWJojYoC_wvm-0CARco"
 								alt="map"
 								style={{ width: "100%", height: "100%" }}
 							/>

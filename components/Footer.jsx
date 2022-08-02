@@ -14,7 +14,7 @@ export default function Footer() {
 					textAlign={{ sm: "center", md: "right" }}
 					paddingRight={{ sm: "0", md: "5rem" }}
 				>
-					<h5 style={{ marginBottom: 0 }}>Maestral</h5>
+					<h5 style={{ marginBottom: 0 }}>Maestralić</h5>
 					<h6 style={{ margin: ".5rem 0" }}>
 						Obrt za usluge, trgovinu, vodeni <br /> prijevoz, iznajmljivanje i
 						djelatnost putničke agencije
