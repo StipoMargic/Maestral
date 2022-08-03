@@ -13,8 +13,8 @@ export default async function handler(req, res) {
 				],
 				payment_method_types: ["card"],
 				mode: "payment",
-				success_url: `http://localhost:3000/?success=true`,
-				cancel_url: `http://localhost:3000/?canceled=true`,
+				success_url: `${window.location.origin}/?success=true`,
+				cancel_url: `${window.location.origin}/?canceled=true`,
 			});
 			res.json({ url: session.url }); // <-- this is the changed line
 		} catch (err) {

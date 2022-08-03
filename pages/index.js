@@ -100,17 +100,13 @@ export default function Home() {
 								display: "flex",
 								justifyContent: "center",
 								alignItems: "center",
-								fontSize: "1.2rem",
+								fontSize: "2rem",
 								lineHeight: "1.5rem",
+								fontWeight: "bold",
+								fontStyle: "italic",
 							}}
 						>
-							Zavijeno u narančastu boju, Maestralić agencija smještena je u
-							prekrasnom djelu starog grada Omiša. Naši radnici spremni su
-							pomoći Vam i pružiti sve potrebne informacije. Dostupni smo za Vas
-							u svakom trenutku. Mi smo agencija s preko 30 godina iskustva rada
-							u turizmu. Grana je to koja cvjeta kod nas zbog Vas. Zato hvala
-							što nas podržavate godinama i što ste postali ili ćete postati dio
-							obitelji Maestralić
+							Istraži Omiš uz dozu adrenalina
 						</Grid>
 					</Grid>
 					<Typography

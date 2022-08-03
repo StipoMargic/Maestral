@@ -123,7 +123,7 @@ export default function ComplexGrid(props) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		fetch("http://localhost:3000/api/checkout_session", {
+		fetch(`${window.location.origin}/api/checkout_session`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
