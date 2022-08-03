@@ -22,8 +22,13 @@ export default function Kontakt() {
 				}}
 			>
 				<Container sx={{ padding: "5rem 0 5rem" }}>
-					<Typography variant="h2" align="center" gutterBottom>
-						Nes odi{" "}
+					<Typography
+						variant="h4"
+						align="center"
+						fontFamily="Lobster"
+						gutterBottom
+					>
+						Pošaljite nam poruku...
 					</Typography>
 					<Box sx={{ flexGrow: 1, marginTop: "1rem" }}>
 						<Grid container spacing={2}>

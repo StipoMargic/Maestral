@@ -16,11 +16,20 @@ export default function Trip({ name, description, image }) {
 				alt={name}
 			/>
 			<CardContent>
-				<Typography gutterBottom variant="h5" component="div">
+				<Typography
+					fontFamily="Lobster, cursive"
+					gutterBottom
+					variant="h5"
+					component="div"
+				>
 					{name}
 				</Typography>
-				<Typography variant="body2" color="text.secondary">
-					{description.slice(0, 125)}
+				<Typography
+					fontFamily="Lobster, cursive"
+					variant="body2"
+					color="text.secondary"
+				>
+					{description.slice(0, 125)}...
 				</Typography>
 			</CardContent>
 			<CardActions
@@ -30,7 +39,7 @@ export default function Trip({ name, description, image }) {
 				}}
 			>
 				<Button href={`/izleti/${name}`} variant="outlined" size="large">
-					Saznaj vise
+					Saznaj više
 				</Button>
 			</CardActions>
 		</Card>

@@ -8,7 +8,7 @@ body {
 	overflow-x: hidden;
 	margin: 0;
 	padding: 0;
-	font-family: "Lobster", cursive !important;
+	font-family: "Lobster", cursive;
 }
 
 #__next {

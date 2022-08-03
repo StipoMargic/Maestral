@@ -60,6 +60,7 @@ export default function Izleti() {
 				}}
 			>
 				<Typography
+					fontFamily="Lobster, cursive"
 					variant="h2"
 					style={{ marginTop: "2rem	", textAlign: "center" }}
 				>

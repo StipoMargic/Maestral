@@ -13,10 +13,10 @@ export default async function handler(req, res) {
 				],
 				payment_method_types: ["card"],
 				mode: "payment",
-				success_url: `${window.location.origin}/?success=true`,
-				cancel_url: `${window.location.origin}/?canceled=true`,
+				success_url: `https://agencijamaestralic.hr/“success`,
+				cancel_url: `https://agencijamaestralic.hr/canceled`,
 			});
-			res.json({ url: session.url }); // <-- this is the changed line
+			res.json({ id: session.id }); // <-- this is the changed line
 		} catch (err) {
 			res.status(err.statusCode || 500).json(err.message);
 		}

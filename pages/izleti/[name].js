@@ -1,7 +1,7 @@
+import { loadStripe } from "@stripe/stripe-js";
 import Typography from "@mui/material/Typography";
 import ButtonBase from "@mui/material/ButtonBase";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Navbar from "../../components/Navbar";
@@ -111,6 +111,10 @@ const Img = styled("img")({
 	maxHeight: "100%",
 });
 
+const stripePromise = loadStripe(
+	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
+
 export default function ComplexGrid(props) {
 	const { trip } = props;
 	const [order, setOrder] = useState({
@@ -120,19 +124,24 @@ export default function ComplexGrid(props) {
 		date: null,
 	});
 	const classes = useStyles();
-	const handleSubmit = (e) => {
-		e.preventDefault();
 
-		fetch(`${window.location.origin}/api/checkout_session`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(order),
-		})
-			.then((res) => res.json())
-			.then((data) => window.open(data.url, "_blank"))
-			.catch((err) => console.log(err));
+	const createCheckOutSession = async () => {
+		const stripe = await stripePromise;
+		const checkoutSession = await (
+			await fetch(`/api/checkout_session`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(order),
+			})
+		).json();
+		const result = await stripe.redirectToCheckout({
+			sessionId: checkoutSession.id,
+		});
+		if (result.error) {
+			alert(result.error.message);
+		}
 	};
 
 	return (
@@ -165,32 +174,37 @@ export default function ComplexGrid(props) {
 						<Grid item xs={12} sm container>
 							<Grid item xs container direction="column" spacing={2}>
 								<Grid item xs>
-									<Typography gutterBottom variant="title" component="div">
+									<Typography gutterBottom variant="h3" fontFamily="Lobster">
 										{trip.name}
 									</Typography>
-									<Typography mt={2} variant="body2" gutterBottom>
+									<Typography
+										variant="body2"
+										fontFamily="Lobster"
+										mt={2}
+										gutterBottom
+									>
 										{trip.description}
 									</Typography>
-									<TextField
-										type="number"
-										name="number"
-										InputProps={{
-											inputProps: {
-												max: 10,
-												min: 1,
-											},
-										}}
-										onChange={(e) => {
-											setOrder({ ...order, quantity: e.target.value });
-										}}
-										value={order.quantity}
-										label="Broj osoba"
-										variant="outlined"
-										defaultValue={3}
-									/>
 								</Grid>
 								<Grid item>
 									<form className={classes.container}>
+										<TextField
+											type="number"
+											name="number"
+											InputProps={{
+												inputProps: {
+													max: 10,
+													min: 1,
+												},
+											}}
+											onChange={(e) => {
+												setOrder({ ...order, quantity: e.target.value });
+											}}
+											value={order.quantity}
+											label="Broj osoba"
+											variant="outlined"
+											defaultValue={3}
+										/>
 										<TextField
 											id="time"
 											onChange={(e) => {
@@ -241,7 +255,7 @@ export default function ComplexGrid(props) {
 									<Button
 										mt={10}
 										type="submit"
-										onClick={handleSubmit}
+										onClick={createCheckOutSession}
 										variant="contained"
 										color="primary"
 									>
