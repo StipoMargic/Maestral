@@ -6,9 +6,10 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Snackbar, Alert } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -117,6 +118,9 @@ const stripePromise = loadStripe(
 
 export default function ComplexGrid(props) {
 	const { trip } = props;
+	const router = useRouter();
+	const { premise } = router.query;
+	console.log(premise);
 	const [order, setOrder] = useState({
 		quantity: 1,
 		price: trip.apiID,
@@ -149,6 +153,12 @@ export default function ComplexGrid(props) {
 			});
 	};
 
+	const payOnPremise = () => {
+		router.push("?premise=true");
+
+		// send email to
+	};
+
 	return (
 		<>
 			<Navbar />
@@ -160,6 +170,18 @@ export default function ComplexGrid(props) {
 					backgroundSize: "cover",
 				}}
 			>
+				{premise && premise === "true" && (
+					<Snackbar
+						open={open}
+						autoHideDuration={10000}
+						anchorOrigin={{ vertical: "top", horizontal: "center" }}
+					>
+						<Alert severity="success" sx={{ width: "100%" }}>
+							Uspješno ste se prijavili na izlet. Rezervacija je poslana na
+							e-mail.
+						</Alert>
+					</Snackbar>
+				)}
 				<Paper
 					sx={{
 						p: 2,
@@ -191,9 +213,10 @@ export default function ComplexGrid(props) {
 										{trip.description}
 									</Typography>
 								</Grid>
-								<Grid item>
-									<form className={classes.container}>
+								<Grid container spacing={3} marginTop={1}>
+									<Grid width={"100%"} item sm={12} md={4}>
 										<TextField
+											fullWidth
 											type="number"
 											name="number"
 											InputProps={{
@@ -209,9 +232,13 @@ export default function ComplexGrid(props) {
 											label="Broj osoba"
 											variant="outlined"
 											defaultValue={3}
+											className={classes.textField}
 										/>
+									</Grid>
+									<Grid width={"100%"} item sm={12} md={4}>
 										<TextField
 											id="time"
+											fullWidth
 											onChange={(e) => {
 												setOrder({ ...order, time: e.target.value });
 											}}
@@ -229,9 +256,11 @@ export default function ComplexGrid(props) {
 												max: "22:00",
 											}}
 										/>
-
+									</Grid>
+									<Grid item sm={12} md={4} width={"100%"}>
 										<TextField
 											id="date"
+											fullWidth
 											label="Datum"
 											type="date"
 											onChange={(e) => {
@@ -248,13 +277,13 @@ export default function ComplexGrid(props) {
 												max: "2022-10-31",
 											}}
 										/>
-									</form>
+									</Grid>
 								</Grid>
 								<Grid
 									item
 									sx={{
 										display: "flex",
-										justifyContent: "center",
+										justifyContent: "space-between",
 									}}
 								>
 									<Button
@@ -266,11 +295,20 @@ export default function ComplexGrid(props) {
 									>
 										Rezerviraj odmah!
 									</Button>
+									<Button
+										mt={10}
+										type="submit"
+										onClick={payOnPremise}
+										variant="outlined"
+										color="success"
+									>
+										Rezerviraj odmah!
+									</Button>
 								</Grid>
 							</Grid>
 							<Grid item>
 								<Typography variant="subtitle1" component="div">
-									&euro; {trip.price}
+									Cijena: &euro; {trip.price}
 								</Typography>
 							</Grid>
 						</Grid>
