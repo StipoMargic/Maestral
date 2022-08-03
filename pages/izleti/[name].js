@@ -120,12 +120,12 @@ export default function ComplexGrid(props) {
 	const { trip } = props;
 	const router = useRouter();
 	const { premise } = router.query;
-	console.log(premise);
 	const [order, setOrder] = useState({
 		quantity: 1,
+		tripName: trip.name,
 		price: trip.apiID,
-		time: null,
-		date: null,
+		time: "10:00",
+		date: new Date().toISOString().split("T")[0],
 	});
 	const classes = useStyles();
 	const createCheckOutSession = async () => {
@@ -141,6 +141,7 @@ export default function ComplexGrid(props) {
 				return response.json();
 			})
 			.then(function (session) {
+				console.log(session.customer);
 				return stripe.redirectToCheckout({ sessionId: session.id });
 			})
 			.then(function (result) {
@@ -231,7 +232,6 @@ export default function ComplexGrid(props) {
 											value={order.quantity}
 											label="Broj osoba"
 											variant="outlined"
-											defaultValue={3}
 											className={classes.textField}
 										/>
 									</Grid>
@@ -242,7 +242,6 @@ export default function ComplexGrid(props) {
 											onChange={(e) => {
 												setOrder({ ...order, time: e.target.value });
 											}}
-											value={order.time}
 											label="Vrijeme"
 											type="time"
 											defaultValue="10:00"
@@ -266,15 +265,13 @@ export default function ComplexGrid(props) {
 											onChange={(e) => {
 												setOrder({ ...order, date: e.target.value });
 											}}
-											value={order.date}
 											defaultValue={new Date().toISOString().split("T")[0]}
 											className={classes.textField}
 											InputLabelProps={{
 												shrink: true,
 											}}
 											InputProps={{
-												min: "2022-04-01",
-												max: "2022-10-31",
+												min: new Date().toISOString().split("T")[0],
 											}}
 										/>
 									</Grid>

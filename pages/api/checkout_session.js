@@ -11,14 +11,23 @@ export default async function handler(req, res) {
 						quantity: req.body.quantity,
 					},
 				],
+
+				phone_number_collection: {
+					enabled: true,
+				},
+				metadata: {
+					email: req.body.email,
+					time: req.body.time,
+					date: req.body.date,
+					quantity: req.body.quantity,
+					tripName: req.body.tripName,
+				},
 				payment_method_types: ["card"],
 				mode: "payment",
 				success_url: `${req.headers.origin}/?status=success`,
 				cancel_url: `${req.headers.origin}/?status=canceled`,
 			});
-
-			console.log(session);
-			res.json({ id: session.id }); // <-- this is the changed line
+			res.json(session); // <-- this is the changed line
 		} catch (err) {
 			res.status(err.statusCode || 500).json(err.message);
 		}
