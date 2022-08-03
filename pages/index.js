@@ -7,9 +7,6 @@ import { Alert, Grid, Snackbar, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import Trip from "../components/Trip.jsx";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 const data = [
 	{
 		id: 6,
@@ -58,7 +55,6 @@ const data = [
 export default function Home() {
 	const router = useRouter();
 	const { status } = router.query;
-	const onSuccess = () => toast.success("Wow so easy!");
 	return (
 		<>
 			<Navbar />
