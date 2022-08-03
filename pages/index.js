@@ -1,12 +1,23 @@
 import React from "react";
+import { useRouter } from "next/router";
 import Navbar from "../components/Navbar.jsx";
 import Image from "next/image";
 import Footer from "../components/Footer";
-import { Grid, Typography } from "@mui/material";
+import { Alert, Grid, Snackbar, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import Trip from "../components/Trip.jsx";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const data = [
+	{
+		id: 6,
+		name: "Rafting",
+		description:
+			"Ako ste spremni dan provesti avanturistički – Rafting tura idealna za Vas. Ne treba Vas biti strah je iskustvo  nije potrebno, a za svaku sigurnost tu je naš skipper. Našu avanturu počinjemo ispred Maestralić agencije. Prvo slijedi 40 min ugodne vožnje do Podgrađa tijekom koje možete uživati promatrajući netaknutu prirodu, visoke planine i guste šume našeg krajolika. Na startu oblačite prsluke i kacige ( a cipele obavezno ponesite ), te su Vam dana i vesla. Zatim kreće avantura brzacima rijeke Cetine koja traje 3 sata uz dulje pauze. Naravno, imat ćete vremena za osvježenje u hladnoj vodi rijeke Cetine. U svakom trenutku, skipper je s Vama tijekom cijele rafting ture. Ohrabrite se i napunite adrenalinom za nezaboravno proveden dan u prirodnom krajoliku.",
+		images: ["5.jpeg"],
+	},
 	{
 		id: 1,
 		name: "Rent a boat",
@@ -42,16 +53,12 @@ const data = [
 			"Zaplovite s nama u jedinstveno iskustvo vožnje rijekom Cetinom. Očekuje Vas 7 km istraživanja čarobnog krajolika, prilika da u 2 sata vidite planine i životinje koje se skrivaju u dubinama rijeke. Rashladite se u vrućim ljetnim danima uživajući u netaknutoj prirodi. Nakon 40 min stižete na odredište – Radmanove mlinice. Restoran, izletište u kojem ćete kroz spokoj kamenih mlinskih kola, krošnji visokih stabala i pastrva u bazenu osjetiti duh prošlosti. Nadalje, osim što možete iskusiti Dalmaciju u restoranu, možete i istražiti ovaj park prirode. Izlet koji je idealan za svakoga, a vraćajući se poželjet ćete da ovo doživite još jednom.",
 		images: ["4.jpeg"],
 	},
-	{
-		id: 6,
-		name: "Rafting",
-		description:
-			"Ako ste spremni dan provesti avanturistički – Rafting tura idealna za Vas. Ne treba Vas biti strah je iskustvo  nije potrebno, a za svaku sigurnost tu je naš skipper. Našu avanturu počinjemo ispred Maestralić agencije. Prvo slijedi 40 min ugodne vožnje do Podgrađa tijekom koje možete uživati promatrajući netaknutu prirodu, visoke planine i guste šume našeg krajolika. Na startu oblačite prsluke i kacige ( a cipele obavezno ponesite ), te su Vam dana i vesla. Zatim kreće avantura brzacima rijeke Cetine koja traje 3 sata uz dulje pauze. Naravno, imat ćete vremena za osvježenje u hladnoj vodi rijeke Cetine. U svakom trenutku, skipper je s Vama tijekom cijele rafting ture. Ohrabrite se i napunite adrenalinom za nezaboravno proveden dan u prirodnom krajoliku.",
-		images: ["5.jpeg"],
-	},
 ];
 
 export default function Home() {
+	const router = useRouter();
+	const { status } = router.query;
+	const onSuccess = () => toast.success("Wow so easy!");
 	return (
 		<>
 			<Navbar />
@@ -64,6 +71,30 @@ export default function Home() {
 				}}
 			>
 				<Container>
+					{status && status === "success" && (
+						<Snackbar
+							open={open}
+							autoHideDuration={10000}
+							anchorOrigin={{ vertical: "top", horizontal: "center" }}
+						>
+							<Alert severity="success" sx={{ width: "100%" }}>
+								Rezervacija je uspješno izvršena. Hvala Vam na povjerenju!
+							</Alert>
+						</Snackbar>
+					)}
+
+					{status && status === "canceled" && (
+						<Snackbar
+							open={open}
+							autoHideDuration={10000}
+							anchorOrigin={{ vertical: "top", horizontal: "center" }}
+						>
+							<Alert severity="error" sx={{ width: "100%" }}>
+								Rezervacija je otkazana.
+							</Alert>
+						</Snackbar>
+					)}
+
 					<Grid container spacing={2} mt={4}>
 						<Grid item xs={12} md={6}>
 							<Image

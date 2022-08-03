@@ -124,24 +124,29 @@ export default function ComplexGrid(props) {
 		date: null,
 	});
 	const classes = useStyles();
-
 	const createCheckOutSession = async () => {
 		const stripe = await stripePromise;
-		const checkoutSession = await (
-			await fetch(`/api/checkout_session`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(order),
+		fetch(`/api/checkout_session`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(order),
+		})
+			.then(function (response) {
+				return response.json();
 			})
-		).json();
-		const result = await stripe.redirectToCheckout({
-			sessionId: checkoutSession.id,
-		});
-		if (result.error) {
-			alert(result.error.message);
-		}
+			.then(function (session) {
+				return stripe.redirectToCheckout({ sessionId: session.id });
+			})
+			.then(function (result) {
+				// If `redirectToCheckout` fails due to a browser or network
+				// error, you should display the localized error message to your
+				// customer using `error.message`.
+				if (result.error) {
+					alert(result.error.message);
+				}
+			});
 	};
 
 	return (

@@ -13,9 +13,11 @@ export default async function handler(req, res) {
 				],
 				payment_method_types: ["card"],
 				mode: "payment",
-				success_url: `https://agencijamaestralic.hr/“success`,
-				cancel_url: `https://agencijamaestralic.hr/canceled`,
+				success_url: `${req.headers.origin}/?status=success`,
+				cancel_url: `${req.headers.origin}/?status=canceled`,
 			});
+
+			console.log(session);
 			res.json({ id: session.id }); // <-- this is the changed line
 		} catch (err) {
 			res.status(err.statusCode || 500).json(err.message);

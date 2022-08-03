@@ -35,7 +35,7 @@ export default function TripBigger({ name, description, image }) {
 				}}
 			>
 				<Button href={`/izleti/${name}`} variant="outlined" size="large">
-					Saznaj više
+					Bukiraj sada
 				</Button>
 			</CardActions>
 		</Card>
