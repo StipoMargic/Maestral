@@ -3,7 +3,7 @@ import Stripe from "stripe";
 const nodemailer = require("nodemailer");
 
 const sendMailToOwner = (body) => {
-	const { email, phone, name } = body.customer_details;
+	const { email, phone, name } = body.billing_details;
 	const { date, time, tripName } = body.metadata;
 	var transporter = nodemailer.createTransport({
 		service: "gmail",
@@ -47,7 +47,7 @@ Telefon: ${phone}<br />
 	});
 };
 const sendMailToCustomer = (body) => {
-	const { email, name } = body.customer_details;
+	const { email, name } = body.billing_details;
 	const { date, time, tripName } = body.metadata;
 	var transporter = nodemailer.createTransport({
 		service: "gmail",
