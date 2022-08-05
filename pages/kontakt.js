@@ -7,8 +7,10 @@ import Grid from "@mui/material/Grid";
 import { Alert, Container, Snackbar } from "@mui/material";
 import { Typography } from "@material-ui/core";
 import { useRouter } from "next/router";
+import { useLang } from "../ctx/LangContext.tsx";
 
 export default function Kontakt() {
+	const { lang } = useLang();
 	const router = useRouter();
 	const { message } = router.query;
 	return (
@@ -30,7 +32,9 @@ export default function Kontakt() {
 							anchorOrigin={{ vertical: "top", horizontal: "center" }}
 						>
 							<Alert variant="filled" severity="success" sx={{ width: "100%" }}>
-								Vaša poruka je uspješno poslana!
+								{lang === "HR"
+									? "Vaša poruka je uspješno poslana!"
+									: "Your message has been sent!"}
 							</Alert>
 						</Snackbar>
 					)}
@@ -40,7 +44,7 @@ export default function Kontakt() {
 						fontFamily="Lobster"
 						gutterBottom
 					>
-						Pošaljite nam poruku...
+						{lang === "HR" ? "Pošaljite nam poruku..." : "Send us a message..."}
 					</Typography>
 					<Box sx={{ flexGrow: 1, marginTop: "1rem" }}>
 						<Grid container spacing={2}>

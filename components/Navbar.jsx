@@ -17,7 +17,24 @@ import {
 } from "@mui/material";
 import AirIcon from "@mui/icons-material/Air";
 import { useLang } from "../ctx/LangContext.tsx";
-const pages = ["Naslovnica", "O nama", "Izleti", "Kontakt"];
+const pages = [
+	{
+		title_hr: "Naslovnica",
+		title_en: "Home",
+	},
+	{
+		title_hr: "O nama",
+		title_en: "About us",
+	},
+	{
+		title_hr: "Izleti",
+		title_en: "Tours",
+	},
+	{
+		title_hr: "Kontakt",
+		title_en: "Contact",
+	},
+];
 
 const Navbar = () => {
 	const [drawer, setDrawer] = useState(false);
@@ -32,7 +49,6 @@ const Navbar = () => {
 		setDrawer(false);
 	};
 	const { lang, setLang } = useLang();
-	console.log(lang);
 
 	return (
 		<AppBar position="static">
@@ -100,11 +116,11 @@ const Navbar = () => {
 						{pages.map((page) => (
 							<Button
 								style={{ color: "white" }}
-								key={page}
-								onClick={() => handleCloseNavMenu(page)}
+								key={page.title_hr}
+								onClick={() => handleCloseNavMenu(page.title_hr)}
 								sx={{ my: 2, color: "white", display: "block" }}
 							>
-								{page}
+								{lang === "HR" ? page.title_hr : page.title_en}
 							</Button>
 						))}
 					</Box>
@@ -138,10 +154,17 @@ const Navbar = () => {
 					onKeyDown={() => setDrawer(false)}
 				>
 					<List>
-						{pages.map((text) => (
-							<ListItem onClick={() => handleCloseNavMenu(text)} key={text}>
+						{pages.map((page) => (
+							<ListItem
+								onClick={() => handleCloseNavMenu(page.title_hr)}
+								key={page.title_hr}
+							>
 								<ListItemButton>
-									<ListItemText primary={text} />
+									{lang === "EN" ? (
+										<ListItemText primary={page.title_en} />
+									) : (
+										<ListItemText primary={page.title_hr} />
+									)}
 								</ListItemButton>
 							</ListItem>
 						))}

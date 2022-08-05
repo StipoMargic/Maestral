@@ -2,8 +2,10 @@ import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { Container, Typography } from "@mui/material";
+import { useLang } from "../ctx/LangContext.tsx";
 
 export const Gallery = () => {
+	const { lang } = useLang();
 	return (
 		<>
 			<Container>
@@ -11,9 +13,9 @@ export const Gallery = () => {
 					variant="h4"
 					sx={{ textAlign: "center", marginTop: "2.5rem" }}
 				>
-					Naši izleti{" "}
+					{lang === "HR" ? "Naši izleti" : "Our excursions"}
 				</Typography>
-				<ImageList sx={{ width: "100%", height: 501 }} cols={6} rowHeight={164}>
+				<ImageList sx={{ width: "100%", height: 665 }} cols={6} rowHeight={164}>
 					{itemData.map((item) => (
 						<ImageListItem key={item}>
 							<img src={`/img/${item}`} loading="lazy" />
@@ -44,4 +46,13 @@ const itemData = [
 	"16.jpeg",
 	"17.jpeg",
 	"18.jpeg",
+	"21.jpeg",
+	"22.jpeg",
+	"23.jpeg",
+	"24.jpeg",
+	"25.jpeg",
+	"26.jpeg",
+	"27.jpeg",
+	"28.jpeg",
+	"30.jpeg",
 ];
