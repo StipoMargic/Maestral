@@ -116,7 +116,7 @@ export default async function handler(req, res) {
 		try {
 			event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
 
-			if (event.type === "checkout.session.completed") {
+			if (event.type === "charge.succeeded") {
 				const charge = event.data.object;
 				sendMailToCustomer(charge);
 				sendMailToOwner(charge);
