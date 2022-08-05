@@ -104,7 +104,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2020-08-27",
 });
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "we_1LTRevD3yQS6sHiOPG3xrV5I";
+const endpointSecret = "whsec_Nd5PP9awBng4blQ5Zh0ISoY2olVtS4h5";
 
 export default async function handler(req, res) {
 	if (req.method === "POST") {
