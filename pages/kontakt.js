@@ -2,14 +2,15 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer";
 import { ContactForm } from "../components/ContactForm.tsx";
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { Container } from "@mui/material";
+import { Alert, Container, Snackbar } from "@mui/material";
 import { Typography } from "@material-ui/core";
+import { useRouter } from "next/router";
 
 export default function Kontakt() {
+	const router = useRouter();
+	const { message } = router.query;
 	return (
 		<>
 			<Navbar />
@@ -22,6 +23,17 @@ export default function Kontakt() {
 				}}
 			>
 				<Container sx={{ padding: "5rem 0 5rem" }}>
+					{message && message === "success" && (
+						<Snackbar
+							open={open}
+							autoHideDuration={1000}
+							anchorOrigin={{ vertical: "top", horizontal: "center" }}
+						>
+							<Alert variant="filled" severity="success" sx={{ width: "100%" }}>
+								Vaša poruka je uspješno poslana!
+							</Alert>
+						</Snackbar>
+					)}
 					<Typography
 						variant="h4"
 						align="center"

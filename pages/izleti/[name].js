@@ -119,6 +119,7 @@ const stripePromise = loadStripe(
 export default function ComplexGrid(props) {
 	const { trip } = props;
 	const router = useRouter();
+	const [onPremiseButton, setOnPremiseButton] = useState(false);
 	const { premise } = router.query;
 	const [order, setOrder] = useState({
 		quantity: 1,
@@ -126,7 +127,10 @@ export default function ComplexGrid(props) {
 		price: trip.apiID,
 		time: "10:00",
 		date: new Date().toISOString().split("T")[0],
+		email: "",
+		tel: "",
 	});
+	const [premiseMail, setPremiseMail] = useState(null);
 	const classes = useStyles();
 	const createCheckOutSession = async () => {
 		const stripe = await stripePromise;
@@ -154,10 +158,19 @@ export default function ComplexGrid(props) {
 			});
 	};
 
-	const payOnPremise = () => {
-		router.push("?premise=true");
+	const payOnPremise = (e) => {
+		e.preventDefault();
+		fetch("/api/payOnPremise", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(order),
+		})
+			.then((res) => console.log(res))
+			.catch((err) => console.log(err));
 
-		// send email to
+		setPremiseMail(true);
 	};
 
 	return (
@@ -249,7 +262,7 @@ export default function ComplexGrid(props) {
 											InputLabelProps={{
 												shrink: true,
 											}}
-											inputProps={{
+											InputProps={{
 												step: 1800, // 30 min
 												min: "08:00",
 												max: "22:00",
@@ -283,25 +296,86 @@ export default function ComplexGrid(props) {
 										justifyContent: "space-between",
 									}}
 								>
-									<Button
-										mt={10}
-										type="submit"
-										onClick={createCheckOutSession}
-										variant="contained"
-										color="primary"
-									>
-										Rezerviraj odmah!
-									</Button>
-									<Button
-										mt={10}
-										type="submit"
-										onClick={payOnPremise}
-										variant="outlined"
-										color="success"
-									>
-										Rezerviraj odmah!
-									</Button>
+									{onPremiseButton === false && (
+										<Button
+											mt={10}
+											type="submit"
+											onClick={createCheckOutSession}
+											variant="contained"
+											color="primary"
+										>
+											Rezerviraj i plati odmah!
+										</Button>
+									)}
+									{onPremiseButton == false && (
+										<Button
+											mt={10}
+											type="submit"
+											onClick={() => setOnPremiseButton(true)}
+											variant="outlined"
+											color="success"
+										>
+											Rezerviraj i plati na izletu
+										</Button>
+									)}
 								</Grid>
+								{onPremiseButton && (
+									<>
+										<small>Provide phone number and email!</small>
+										<Grid container spacing={3} marginTop={1}>
+											<Grid width={"100%"} item sm={12} md={4}>
+												<TextField
+													id="email"
+													fullWidth
+													onChange={(e) => {
+														setOrder({ ...order, email: e.target.value });
+													}}
+													label="Email"
+													type="email"
+													defaultValue="10:00"
+													className={classes.textField}
+													InputLabelProps={{
+														shrink: true,
+													}}
+													value={order.email}
+													required
+												/>
+											</Grid>
+											<Grid item sm={12} md={4} width={"100%"}>
+												<TextField
+													id="tel"
+													fullWidth
+													label="Telefon"
+													type="tel"
+													onChange={(e) => {
+														setOrder({ ...order, tel: e.target.value });
+													}}
+													className={classes.textField}
+													InputLabelProps={{
+														shrink: true,
+													}}
+													value={order.tel}
+													required
+												/>
+											</Grid>
+											<Grid width={"100%"} item sm={12} md={4}>
+												{premiseMail === true ? (
+													<p>Vaša rezervacija je zaprimljena</p>
+												) : (
+													<Button
+														mt={10}
+														type="submit"
+														onClick={payOnPremise}
+														variant="outlined"
+														color="success"
+													>
+														Rezerviraj i plati na izletu
+													</Button>
+												)}
+											</Grid>
+										</Grid>
+									</>
+								)}
 							</Grid>
 							<Grid item>
 								<Typography variant="subtitle1" component="div">

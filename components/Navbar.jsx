@@ -16,7 +16,7 @@ import {
 	ListItemText,
 } from "@mui/material";
 import AirIcon from "@mui/icons-material/Air";
-
+import { useLang } from "../ctx/LangContext.tsx";
 const pages = ["Naslovnica", "O nama", "Izleti", "Kontakt"];
 
 const Navbar = () => {
@@ -31,6 +31,8 @@ const Navbar = () => {
 		);
 		setDrawer(false);
 	};
+	const { lang, setLang } = useLang();
+	console.log(lang);
 
 	return (
 		<AppBar position="static">
@@ -91,7 +93,7 @@ const Navbar = () => {
 						sx={{
 							justifyContent: "center",
 							alignItems: "center",
-							width: "100%",
+							width: "80%",
 							display: { xs: "none", md: "flex" },
 						}}
 					>
@@ -106,6 +108,26 @@ const Navbar = () => {
 							</Button>
 						))}
 					</Box>
+					<div style={{ marginRight: "2rem", display: "flex" }}>
+						<ul style={{ display: "flex", listStyle: "none" }}>
+							<li
+								style={
+									lang === "HR"
+										? { color: "#b3f4a2", marginRight: "1rem" }
+										: { marginRight: "1rem" }
+								}
+								onClick={() => setLang("HR")}
+							>
+								HR
+							</li>
+							<li
+								style={lang === "EN" ? { color: "#b3f4a2" } : {}}
+								onClick={() => setLang("EN")}
+							>
+								EN
+							</li>
+						</ul>
+					</div>
 				</Toolbar>
 			</Container>
 			<Drawer anchor={"left"} open={drawer} onClose={() => setDrawer(false)}>

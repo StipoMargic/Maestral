@@ -1,14 +1,20 @@
+import Router, { useRouter } from "next/router";
 import { useState } from "react";
 
 const PostContactForm = async (
 	values: any,
-	successCallback: any,
-	errorCallback: any
+	successHandler: () => void,
 ) => {
-	// do stuff
-	// if successful
-	if (true) successCallback();
-	else errorCallback();
+	fetch("/api/contact",
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(values),
+		}).then(res => alert("Poruka poslana")).catch(err => console.log(err));
+
+	successHandler();
 };
 
 const initialFormValues = {
@@ -20,6 +26,7 @@ const initialFormValues = {
 };
 
 export const useFormControls = () => {
+	const router = useRouter();
 	const [values, setValues] = useState(initialFormValues);
 	const [errors, setErrors] = useState({} as any);
 
@@ -55,22 +62,6 @@ export const useFormControls = () => {
 		validate({ [name]: value });
 	};
 
-	const handleSuccess = () => {
-		setValues({
-			...initialFormValues,
-			formSubmitted: true,
-			success: true,
-		});
-	};
-
-	const handleError = () => {
-		setValues({
-			...initialFormValues,
-			formSubmitted: true,
-			success: false,
-		});
-	};
-
 	const formIsValid = (fieldValues = values) => {
 		const isValid =
 			fieldValues.fullName &&
@@ -81,12 +72,15 @@ export const useFormControls = () => {
 		return isValid;
 	};
 
+	const successHandler = () => {
+		router.push("?message=success");
+	};
 	const handleFormSubmit = async (e: any) => {
 		e.preventDefault();
 		const isValid =
 			Object.values(errors).every((x) => x === "") && formIsValid();
 		if (isValid) {
-			await PostContactForm(values, handleSuccess, handleError);
+			await PostContactForm(values, successHandler);
 		}
 	};
 

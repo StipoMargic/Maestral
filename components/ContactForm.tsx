@@ -1,4 +1,5 @@
 import { Button, TextField } from "@material-ui/core";
+import { useRouter } from "next/router";
 import React from "react";
 import { useFormControls } from "./ContactFormControls.tsx";
 
@@ -23,6 +24,9 @@ const inputFieldValues = [
 ];
 
 export const ContactForm = () => {
+  const router = useRouter();
+  const { message } = router.query;
+
   const {
     handleInputValue,
     handleFormSubmit,
@@ -56,7 +60,7 @@ export const ContactForm = () => {
         variant="contained"
         type="submit"
         color="secondary"
-        disabled={!formIsValid()}
+        disabled={!formIsValid() || message === "success"}
       >
         Send Message
       </Button>

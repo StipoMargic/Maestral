@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import { Alert, Grid, Snackbar, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import Trip from "../components/Trip.jsx";
+import { useLang } from "../ctx/LangContext.tsx";
 
 const data = [
 	{
@@ -54,6 +55,8 @@ const data = [
 
 export default function Home() {
 	const router = useRouter();
+	const { lang } = useLang();
+	console.log(lang);
 	const { status } = router.query;
 	return (
 		<>

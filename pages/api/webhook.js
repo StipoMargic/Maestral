@@ -2,19 +2,63 @@ import { buffer } from "micro";
 import Stripe from "stripe";
 const nodemailer = require("nodemailer");
 
-const sendMail = (body) => {
+const sendMailToOwner = (body) => {
 	const { email, phone, name } = body.customer_details;
 	const { date, time, tripName } = body.metadata;
-	let transporter = nodemailer.createTransport({
-		host: "smtp.mailtrap.io",
-		port: 2525,
+	var transporter = nodemailer.createTransport({
+		service: "gmail",
 		auth: {
-			user: "fbcf57776972ee",
-			pass: "d272d7043e25be",
+			user: "agencijamaestralic@gmail.com",
+			pass: "aixwndcmzqfjlwni",
 		},
 	});
+
 	let mailOptions = {
-		from: "youremail@gmail.com",
+		from: "agencijamaestralic@gmail.com",
+		to: "agencijamaestralic@gmail.com",
+		subject: `${name} -reserved  ${tripName}`,
+		html: `<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Your reservation is done!</title>
+	</head>
+	<body>
+		${name} je rezervirao ${tripName} !<br />
+		<br />
+		Datum: ${date}<br />
+Vrijeme: ${time}<br />
+Email: ${email}<br />
+Telefon: ${phone}<br />
+		<br />
+	</body>
+</html>
+`,
+	};
+
+	transporter.sendMail(mailOptions, function (error, info) {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log("Email sent: " + info.response);
+		}
+	});
+};
+const sendMailToCustomer = (body) => {
+	const { email, name } = body.customer_details;
+	const { date, time, tripName } = body.metadata;
+	var transporter = nodemailer.createTransport({
+		service: "gmail",
+		auth: {
+			user: "agencijamaestralic@gmail.com",
+			pass: "aixwndcmzqfjlwni",
+		},
+	});
+
+	let mailOptions = {
+		from: "agencijamaestralic@gmail.com",
 		to: email,
 		subject: "Your order has been placed",
 		html: `<!DOCTYPE html>
@@ -75,8 +119,8 @@ export default async function handler(req, res) {
 
 			if (event.type === "checkout.session.completed") {
 				const charge = event.data.object;
-				console.log(event.data);
-				sendMail(charge);
+				sendMailToCustomer(charge);
+				sendMailToOwner(charge);
 			} else {
 				console.warn(`Unhandled event type: ${event.type}`);
 			}

@@ -1,9 +1,12 @@
+import LangProvider from "../ctx/LangContext.tsx";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
 	return (
 		<>
-			<Component {...pageProps} />
+			<LangProvider>
+				<Component {...pageProps} />
+			</LangProvider>
 		</>
 	);
 }
