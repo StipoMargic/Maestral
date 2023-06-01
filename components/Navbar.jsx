@@ -86,7 +86,7 @@ const Navbar = () => {
 							<MenuIcon />
 						</IconButton>
 					</Box>
-					<AirIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+					<AirIcon sx={{ display: { xs: "none", md: "none" }, mr: 1 }} />
 					<Typography
 						variant="h5"
 						noWrap
@@ -103,7 +103,7 @@ const Navbar = () => {
 							textDecoration: "none",
 						}}
 					>
-						Maestral
+						Maestralić
 					</Typography>
 					<Box
 						sx={{

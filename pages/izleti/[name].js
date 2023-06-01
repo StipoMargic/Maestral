@@ -33,7 +33,7 @@ const data = [
 			"If you are ready to spend an adventurous day - Rafting tour is ideal for you. You don't need to be afraid, experience is not necessary, and our skipper is there for all safety. We start our adventure in front of the Maestralić agency. First, there is a 40-minute pleasant drive to Podgrađe, during which you can enjoy observing the untouched nature, high mountains and dense forests of our landscape. At the start, you put on vests and helmets (and you must bring your shoes), and you are also given oars. Then the adventure begins with the rapids of the Cetina river, which lasts 3 hours with longer breaks. Of course, you will have time to refresh yourself in the cold water of the Cetina River. At all times, the skipper is with you during the entire rafting tour. Take courage and fill with adrenaline for an unforgettable day spent in nature.",
 		images: ["/rafting/1.jpeg", "/rafting/2.jpeg", "/rafting/3.jpeg"],
 
-		price: 30,
+		price: 35,
 		max: 8,
 		apiID: "price_1LSOdFD3yQS6sHiOceZxl8kH",
 	},
@@ -45,7 +45,7 @@ const data = [
 		description_en:
 			"Become a ship captain for a day! Enjoy the scenery of the river Cetina driving the boat yourself. We will show you how simple it is, and then go on an adventure. You don't have to be a professional, in fact no experience is necessary. Come alone, gather your family or friends and explore the canyon together. While driving, you will discover all the secrets and tranquility of the Cetina river, you will even see the beauty of the magnificent forests and mountains. If you look hard enough, your eyes will not be able to get enough of the colors and combinations of waves that the river produces, as well as the multitude of small living creatures such as frogs, turtles and various fish. We don't need to say much more about the chirping of birds and the peace that this ride will bring you. What are you waiting for, go on a new adventure and see for yourself!",
 		images: ["/rent/1.jpeg", "/rent/2.jpeg", "/rent/3.jpeg"],
-		price: 50,
+		price: 60,
 		max: 8,
 		apiID: "price_1LSOeVD3yQS6sHiOTNo0l7FV",
 	},
@@ -84,8 +84,8 @@ const data = [
 			"If you are adventurous or simply ready for a different experience, try a canyoning tour. Previous experience is not necessary, only good will and desire. Discover the mystical creations hidden by the river Cetina. A combination of walking, climbing, jumping, swimming and enjoying. 3-4 hours of refreshing in the wonderful river, exploring untouched nature and the 500-meter high Gubavica waterfall. Have fun and at the same time experience the tranquility of Cetina. The guide is with you during the entire tour, so you don't have to worry or fear anything. After all, life is too short not to take advantage of this unique opportunity and try canyoning.",
 		images: ["/canyon/1.jpeg", "/canyon/2.jpeg", "/canyon/3.jpeg"],
 
-		price: 70,
-		mas: 20,
+		price: 60,
+		max: 20,
 		apiID: "price_1LSOdnD3yQS6sHiOYrZx494e",
 	},
 	{
