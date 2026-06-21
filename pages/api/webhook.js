@@ -1,21 +1,14 @@
 import { buffer } from "micro";
 import Stripe from "stripe";
-const nodemailer = require("nodemailer");
+import { sendMail } from "../../lib/mailer";
 
 const sendMailToOwner = (body) => {
 	const { email, phone, name } = body.billing_details;
 	const { date, time, tripName } = body.metadata;
-	var transporter = nodemailer.createTransport({
-		service: "gmail",
-		auth: {
-			user: "agencijamaestralic@gmail.com",
-			pass: "aixwndcmzqfjlwni",
-		},
-	});
 
-	let mailOptions = {
-		from: "agencijamaestralic@gmail.com",
-		to: "agencijamaestralic@gmail.com",
+	const mailOptions = {
+		from: process.env.GMAIL_USER,
+		to: process.env.GMAIL_USER,
 		subject: `${name} -reserved  ${tripName}`,
 		html: `<!DOCTYPE html>
 <html lang="en">
@@ -38,27 +31,15 @@ Telefon: ${phone}<br />
 `,
 	};
 
-	transporter.sendMail(mailOptions, function (error, info) {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log("Email sent: " + info.response);
-		}
-	});
+	return sendMail(mailOptions);
 };
+
 const sendMailToCustomer = (body) => {
 	const { email, name } = body.billing_details;
 	const { date, time, tripName } = body.metadata;
-	var transporter = nodemailer.createTransport({
-		service: "gmail",
-		auth: {
-			user: "agencijamaestralic@gmail.com",
-			pass: "aixwndcmzqfjlwni",
-		},
-	});
 
-	let mailOptions = {
-		from: "agencijamaestralic@gmail.com",
+	const mailOptions = {
+		from: process.env.GMAIL_USER,
 		to: email,
 		subject: "Your order has been placed",
 		html: `<!DOCTYPE html>
@@ -85,13 +66,7 @@ const sendMailToCustomer = (body) => {
 `,
 	};
 
-	transporter.sendMail(mailOptions, function (error, info) {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log("Email sent: " + info.response);
-		}
-	});
+	return sendMail(mailOptions);
 };
 
 export const config = {
@@ -103,34 +78,39 @@ export const config = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 	apiVersion: "2020-08-27",
 });
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "whsec_Nd5PP9awBng4blQ5Zh0ISoY2olVtS4h5";
+
+// Stripe CLI / dashboard webhook signing secret — read from the environment.
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export default async function handler(req, res) {
-	if (req.method === "POST") {
-		const buf = await buffer(req);
-		const sig = req.headers["stripe-signature"];
+	if (req.method !== "POST") {
+		res.setHeader("Allow", "POST");
+		return res.status(405).end("Method Not Allowed");
+	}
 
-		let event;
+	const buf = await buffer(req);
+	const sig = req.headers["stripe-signature"];
 
-		try {
-			event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
+	let event;
 
-			if (event.type === "charge.succeeded") {
-				const charge = event.data.object;
-				sendMailToCustomer(charge);
-				sendMailToOwner(charge);
-			} else {
-				console.warn(`Unhandled event type: ${event.type}`);
-			}
-		} catch (err) {
-			res.status(400).send(`Webhook Error: ${err.message}`);
-			return;
+	try {
+		event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
+	} catch (err) {
+		res.status(400).send(`Webhook Error: ${err.message}`);
+		return;
+	}
+
+	try {
+		if (event.type === "charge.succeeded") {
+			const charge = event.data.object;
+			await Promise.all([sendMailToCustomer(charge), sendMailToOwner(charge)]);
+		} else {
+			console.warn(`Unhandled event type: ${event.type}`);
 		}
 
 		res.json({ received: true });
-	} else {
-		res.setHeader("Allow", "POST");
-		res.status(405).end("Method Not Allowed");
+	} catch (err) {
+		console.error("Failed to handle webhook event:", err);
+		res.status(500).json({ error: "Failed to process webhook" });
 	}
 }

@@ -1,20 +1,30 @@
-const nodemailer = require("nodemailer");
+import { sendMail } from "../../lib/mailer";
 
 export default async function handler(req, res) {
-	if (req.method === "POST") {
-		var transporter = nodemailer.createTransport({
-			service: "gmail",
-			auth: {
-				user: "agencijamaestralic@gmail.com",
-				pass: "aixwndcmzqfjlwni",
-			},
-		});
+	if (req.method !== "POST") {
+		res.setHeader("Allow", "POST");
+		return res.status(405).end("Method Not Allowed");
+	}
 
-		let mailOptions = {
-			from: req.body.email,
-			to: "agencijamaestralic@gmail.com",
-			subject: `${req.body.fullName} je poslao poruku`,
-			html: `<!DOCTYPE html>
+	const { fullName, email, message } = req.body ?? {};
+
+	const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	if (
+		typeof fullName !== "string" ||
+		!fullName.trim() ||
+		typeof email !== "string" ||
+		!emailPattern.test(email) ||
+		typeof message !== "string" ||
+		!message.trim()
+	) {
+		return res.status(400).json({ error: "Invalid input" });
+	}
+
+	const mailOptions = {
+		from: email,
+		to: process.env.GMAIL_USER,
+		subject: `${fullName} je poslao poruku`,
+		html: `<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -23,25 +33,21 @@ export default async function handler(req, res) {
 		<title>Your reservation is done!</title>
 	</head>
 	<body>
-		${req.body.fullName} je poslao poruku !<br />
+		${fullName} je poslao poruku !<br />
 		<br />
-    Email: ${req.body.email}<br /> <br />
-    Poruka: ${req.body.message}<br />
+    Email: ${email}<br /> <br />
+    Poruka: ${message}<br />
 		<br />
 	</body>
 </html>
 `,
-		};
+	};
 
-		transporter.sendMail(mailOptions, function (error, info) {
-			if (error) {
-				console.log(error);
-			} else {
-				console.log("Email sent: " + info.response);
-			}
-		});
-	} else {
-		res.setHeader("Allow", "POST");
-		res.status(405).end("Method Not Allowed");
+	try {
+		await sendMail(mailOptions);
+		return res.status(200).json({ ok: true });
+	} catch (error) {
+		console.error("Failed to send contact email:", error);
+		return res.status(500).json({ error: "Failed to send email" });
 	}
 }

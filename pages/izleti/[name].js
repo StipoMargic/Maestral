@@ -8,21 +8,9 @@ import Grid from "@mui/material/Grid";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { TextField, Button, Snackbar, Alert } from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const useStyles = makeStyles((theme) => ({
-	container: {
-		display: "flex",
-		flexWrap: "wrap",
-	},
-	textField: {
-		marginLeft: theme.spacing(1),
-		marginRight: theme.spacing(1),
-		width: 200,
-	},
-}));
 const data = [
 	{
 		id: 6,
@@ -150,7 +138,6 @@ export default function ComplexGrid(props) {
 		tel: "",
 	});
 	const [premiseMail, setPremiseMail] = useState(null);
-	const classes = useStyles();
 	const createCheckOutSession = async () => {
 		const stripe = await stripePromise;
 		fetch(`/api/checkout_session`, {
@@ -265,7 +252,7 @@ export default function ComplexGrid(props) {
 											value={order.quantity}
 											label={lang === "HR" ? "Broj osoba" : "Number of people"}
 											variant="outlined"
-											className={classes.textField}
+											sx={{ mx: 1, width: 200 }}
 										/>
 									</Grid>
 									<Grid width={"100%"} item sm={12} md={4}>
@@ -278,7 +265,7 @@ export default function ComplexGrid(props) {
 											label="Vrijeme"
 											type="time"
 											defaultValue={lang === "HR" ? "Vrijeme" : "Time"}
-											className={classes.textField}
+											sx={{ mx: 1, width: 200 }}
 											InputLabelProps={{
 												shrink: true,
 											}}
@@ -299,7 +286,7 @@ export default function ComplexGrid(props) {
 												setOrder({ ...order, date: e.target.value });
 											}}
 											defaultValue={new Date().toISOString().split("T")[0]}
-											className={classes.textField}
+											sx={{ mx: 1, width: 200 }}
 											InputLabelProps={{
 												shrink: true,
 											}}
@@ -357,7 +344,7 @@ export default function ComplexGrid(props) {
 													label={lang === "HR" ? "Email" : "E-mail"}
 													type="email"
 													defaultValue="10:00"
-													className={classes.textField}
+													sx={{ mx: 1, width: 200 }}
 													InputLabelProps={{
 														shrink: true,
 													}}
@@ -376,7 +363,7 @@ export default function ComplexGrid(props) {
 													onChange={(e) => {
 														setOrder({ ...order, tel: e.target.value });
 													}}
-													className={classes.textField}
+													sx={{ mx: 1, width: 200 }}
 													InputLabelProps={{
 														shrink: true,
 													}}
