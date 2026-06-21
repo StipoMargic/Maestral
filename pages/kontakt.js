@@ -4,8 +4,7 @@ import { ContactForm } from "../components/ContactForm.tsx";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Alert, Container, Snackbar } from "@mui/material";
-import { Typography } from "@material-ui/core";
+import { Alert, Container, Snackbar, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useLang } from "../ctx/LangContext.tsx";
 
