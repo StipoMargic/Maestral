@@ -340,14 +340,14 @@ export default function ComplexGrid(props) {
 													fullWidth
 													onChange={(e) => {
 														setOrder({ ...order, email: e.target.value });
-												}}
+													}}
 													label={lang === "HR" ? "Email" : "E-mail"}
 													type="email"
 													defaultValue="10:00"
 													sx={{ mx: 1, width: 200 }}
 													InputLabelProps={{
-													shrink: true,
-												}}
+														shrink: true,
+													}}
 													value={order.email}
 													required
 												/>
@@ -357,16 +357,16 @@ export default function ComplexGrid(props) {
 													id="tel"
 													fullWidth
 													label={
-													lang === "HR" ? "Broj telefona" : "Phone number"
-												}
+														lang === "HR" ? "Broj telefona" : "Phone number"
+													}
 													type="tel"
 													onChange={(e) => {
 														setOrder({ ...order, tel: e.target.value });
-												}}
+													}}
 													sx={{ mx: 1, width: 200 }}
 													InputLabelProps={{
-													shrink: true,
-												}}
+														shrink: true,
+													}}
 													value={order.tel}
 													required
 												/>
@@ -374,20 +374,20 @@ export default function ComplexGrid(props) {
 											<Grid width={"100%"} item sm={12} md={4}>
 												{premiseMail === true ? (
 													<p>Vaša rezervacija je zaprimljena</p>
-											) : (
-												<Button
-													mt={10}
-													type="submit"
-													onClick={payOnPremise}
-													variant="outlined"
-													color="success"
-												>
-													{lang === "HR"
-														? "Rezerviraj i plati na izletu"
-														: "Reserve and pay on-site"}
-												</Button>
-											)}
-										</Grid>
+												) : (
+													<Button
+														mt={10}
+														type="submit"
+														onClick={payOnPremise}
+														variant="outlined"
+														color="success"
+													>
+														{lang === "HR"
+															? "Rezerviraj i plati na izletu"
+															: "Reserve and pay on-site"}
+													</Button>
+												)}
+											</Grid>
 										</Grid>
 									</>
 								)}
