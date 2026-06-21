@@ -1,22 +1,32 @@
-const nodemailer = require("nodemailer");
+import { sendMail } from "../../lib/mailer";
 
 export default async function handler(req, res) {
-	if (req.method === "POST") {
-		var transporter = nodemailer.createTransport({
-			service: "gmail",
-			auth: {
-				user: "agencijamaestralic@gmail.com",
-				pass: "aixwndcmzqfjlwni",
-			},
-		});
+	if (req.method !== "POST") {
+		res.setHeader("Allow", "POST");
+		return res.status(405).end("Method Not Allowed");
+	}
 
-		const { quantity, tripName, time, date, email, tel } = req.body;
+	const { quantity, tripName, time, date, email, tel } = req.body ?? {};
 
-		let mailOptions = {
-			from: email,
-			to: "agencijamaestralic@gmail.com",
-			subject: `Netko hoće izlet s plaćanjem na lokaciji`,
-			html: `<!DOCTYPE html>
+	const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	if (
+		typeof email !== "string" ||
+		!emailPattern.test(email) ||
+		!tripName ||
+		!time ||
+		!date ||
+		!tel ||
+		!Number.isInteger(Number(quantity)) ||
+		Number(quantity) < 1
+	) {
+		return res.status(400).json({ error: "Invalid input" });
+	}
+
+	const mailOptions = {
+		from: email,
+		to: process.env.GMAIL_USER,
+		subject: `Netko hoće izlet s plaćanjem na lokaciji`,
+		html: `<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -37,17 +47,13 @@ export default async function handler(req, res) {
 	</body>
 </html>
 `,
-		};
+	};
 
-		transporter.sendMail(mailOptions, function (error, info) {
-			if (error) {
-				console.log(error);
-			} else {
-				console.log("Email sent: " + info.response);
-			}
-		});
-	} else {
-		res.setHeader("Allow", "POST");
-		res.status(405).end("Method Not Allowed");
+	try {
+		await sendMail(mailOptions);
+		return res.status(200).json({ ok: true });
+	} catch (error) {
+		console.error("Failed to send pay-on-premise email:", error);
+		return res.status(500).json({ error: "Failed to send email" });
 	}
 }
