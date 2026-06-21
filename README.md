@@ -1,34 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Maestralić
 
-## Getting Started
+Bilingual (Croatian / English) website for **Maestralić**, an adventure tourism
+agency in Omiš, Croatia. Visitors can browse tours (rafting, boat rental,
+kayaking, canyoning, quad/ATV safari), book and pay online via Stripe, or send a
+booking/contact request by email.
 
-First, run the development server:
+Built with [Next.js](https://nextjs.org/) (Pages Router).
+
+## Stack
+
+- **Next.js 12** + **React 18**
+- **MUI v5** (`@mui/material`) with Emotion for styling
+- **Stripe** for checkout (`@stripe/stripe-js` + `stripe`)
+- **Nodemailer** (Gmail) for contact / booking emails
+- Language state via React Context + cookies (`ctx/`)
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Environment variables
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Copy `.env.example` to `.env.local` and fill in the values:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+| Variable                             | Purpose                                      |
+| ------------------------------------ | -------------------------------------------- |
+| `GMAIL_USER`                         | Gmail address used to send emails            |
+| `GMAIL_APP_PASSWORD`                 | Gmail [App Password](https://myaccount.google.com/apppasswords) |
+| `STRIPE_SECRET_KEY`                  | Stripe secret key (server-side)              |
+| `STRIPE_WEBHOOK_SECRET`              | Stripe webhook signing secret                |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key (client-side)         |
 
-## Learn More
+> Never commit real secrets. `.env*` files (except `.env.example`) are gitignored.
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Command                | Description                          |
+| ---------------------- | ------------------------------------ |
+| `npm run dev`          | Start the dev server                 |
+| `npm run build`        | Production build                     |
+| `npm start`            | Run the production build             |
+| `npm run lint`         | Lint with `next lint`                |
+| `npm run format`       | Format the codebase with Prettier    |
+| `npm run format:check` | Check formatting without writing     |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Stripe webhooks (local)
 
-## Deploy on Vercel
+To test the booking confirmation emails locally, forward Stripe events to the
+webhook route:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+stripe listen --forward-to localhost:3000/api/webhook
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Use the signing secret it prints as `STRIPE_WEBHOOK_SECRET`.
+
+## Deployment
+
+Deployed on [Vercel](https://vercel.com/). Set all environment variables above
+in the Vercel project settings.

@@ -2,6 +2,10 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
 	if (req.method === "POST") {
+		const { price, quantity } = req.body ?? {};
+		if (!price || !Number.isInteger(Number(quantity)) || Number(quantity) < 1) {
+			return res.status(400).json({ error: "Invalid input" });
+		}
 		try {
 			const session = await stripe.checkout.sessions.create({
 				line_items: [
